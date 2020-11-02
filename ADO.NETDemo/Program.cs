@@ -9,16 +9,29 @@ namespace ADO.NETDemo
 {
     using System;
     using System.Collections.Generic;
-
+    /// <summary>
+    /// Calling different methods to print list, add details
+    /// </summary>
     class Program
     {
+        //instatiating employee model
         EmployeeModel employeeModel = new EmployeeModel();
+        /// <summary>
+        /// Defines the entry point of the application.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Employee Payroll");
-
-            
+            //GettingAllData();
+            AddingDataInDataBase();
+          
+        }
+        public static void GettingAllData()
+        {
+            //Instatiating employee repository class that contain methods for database connection and retrieval
             EmployeeRepository employeeRepository = new EmployeeRepository();
+            //defining list to print all the details from the database
             List<EmployeeModel> list = employeeRepository.GetAllemployee();
             try
             {
@@ -27,11 +40,37 @@ namespace ADO.NETDemo
                     Console.WriteLine($"Id: {employeeModel.EmployeeID} Name:{employeeModel.EmployeeName} CompanyName: {employeeModel.companyName} DepartmentName: {employeeModel.Department} phoneNumber: {employeeModel.PhoneNumber} gender: {employeeModel.Gender}  address: {employeeModel.Address} netpay={employeeModel.NetPay}");
                 }
             }
-            catch(Exception ex)
+            //catches exception
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex);
             }
+        }
+        public static void AddingDataInDataBase()
+        {
+            //instatiating employeemodel object
+            EmployeeModel employeeModel = new EmployeeModel();
+            //employeeModel.EmployeeID = 04;
+            employeeModel.EmployeeName = "Akshay";
+            employeeModel.Gender = "M";
+            employeeModel.PhoneNumber = 8585858585;
+            employeeModel.StartDate= Convert.ToDateTime("2020-09-18");
+            //employeeModel.BasicPay = 500000;
+            //employeeModel.Deductions = 50000;
+            //employeeModel.TaxablePay = 450000;
+            //employeeModel.Tax = 50000;
+            //employeeModel.NetPay = 400000;
+            employeeModel.Address = "Bangalore";
+            employeeModel.companyId = 001;
+            //employeeModel.companyName = "Capgemini India";
+            //instatiating employee repository
+            EmployeeRepository employeeRepository = new EmployeeRepository();
+            //passing employee model into method of employee repository class
+            bool result= employeeRepository.AddEmployee(employeeModel);
+            //printing message on the basis of bool result using ternary condition
+            Console.WriteLine(result == true ? "data writtern in database" : "data is not written in database");
+
         }
     }
 }
