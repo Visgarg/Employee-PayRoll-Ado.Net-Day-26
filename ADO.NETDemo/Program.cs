@@ -22,10 +22,10 @@ namespace ADO.NETDemo
         /// <param name="args">The arguments.</param>
         static void Main(string[] args)
         {
+            //Console.WriteLine("Hello World!");
             Console.WriteLine("Welcome to Employee Payroll");
             //GettingAllData();
             AddingDataInDataBase();
-          
         }
         public static void GettingAllData()
         {

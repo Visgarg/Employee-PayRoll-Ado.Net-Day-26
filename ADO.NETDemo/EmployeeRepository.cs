@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EmployeeRepository.cs" company="Capgemini">
 //   Copyright
 // </copyright>
@@ -68,8 +68,8 @@ namespace ADO.NETDemo
 
                         //adding details into list
                         employeeDetailsList.Add(employeeModel);
-                        
-                       
+
+
                     }
                     //reader connection closed
                     dr.Close();
@@ -97,7 +97,7 @@ namespace ADO.NETDemo
             try
             {
                 //using established connection
-                using(this.connection)
+                using (this.connection)
                 {
                     //sql command which executes stored procedure created in sql server
                     SqlCommand command = new SqlCommand("spAddEmployeeDetails", connection);
@@ -113,10 +113,10 @@ namespace ADO.NETDemo
                     //opening connection
                     connection.Open();
                     //adding data into database - using disconnected architecture(as connected architecture only reads the data)
-                    var result= command.ExecuteNonQuery();
+                    var result = command.ExecuteNonQuery();
                     //closing connection
                     connection.Close();
-                    if(result !=0)
+                    if (result != 0)
                     {
                         return true;
                     }
