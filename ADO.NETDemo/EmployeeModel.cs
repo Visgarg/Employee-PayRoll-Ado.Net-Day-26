@@ -9,6 +9,9 @@ namespace ADO.NETDemo
     using System;
     using System.Collections.Generic;
     using System.Text;
+    /// <summary>
+    /// Adding properties for the variables to be retrieved from database
+    /// </summary>
     class EmployeeModel
     {
         public int EmployeeID { get; set; }

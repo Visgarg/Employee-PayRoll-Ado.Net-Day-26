@@ -1,4 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="EmployeeRepository.cs" company="Capgemini">
 //   Copyright
 // </copyright>
@@ -123,7 +123,7 @@ namespace ADO.NETDemo
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
