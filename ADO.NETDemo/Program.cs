@@ -26,11 +26,11 @@ namespace ADO.NETDemo
             Console.WriteLine("Welcome to Employee Payroll");
             //GettingAllData();
             //AddingDataInDataBase();
-            //UpdatingSalary();
-            //ReadingUpdatedData();
+            EmployeeRepositoryCaller.UpdatingSalary();
+            EmployeeRepositoryCaller.ReadingUpdatedData();
             //RetrievingSpecificDateRangeData();
             //EmployeeRepositoryCaller.RetrievingGroupedDataByGender();
-            EmployeeRepositoryCaller.AddingDataInMultipleTable();
+            //EmployeeRepositoryCaller.AddingDataInMultipleTable();
 
         }
        
