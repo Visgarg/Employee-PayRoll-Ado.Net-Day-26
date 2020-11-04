@@ -29,7 +29,6 @@ namespace ADO.NETDemo
             UpdatingSalary();
             ReadingUpdatedData();
             
-
         }
         public static void GettingAllData()
         {
@@ -59,7 +58,7 @@ namespace ADO.NETDemo
             employeeModel.EmployeeName = "Akshay";
             employeeModel.Gender = "M";
             employeeModel.PhoneNumber = 8585858585;
-            employeeModel.StartDate = Convert.ToDateTime("2020-09-18");
+            employeeModel.StartDate= Convert.ToDateTime("2020-09-18");
             //employeeModel.BasicPay = 500000;
             //employeeModel.Deductions = 50000;
             //employeeModel.TaxablePay = 450000;
@@ -72,7 +71,7 @@ namespace ADO.NETDemo
             //instatiating employee repository
             EmployeeRepository employeeRepository = new EmployeeRepository();
             //passing employee model into method of employee repository class
-            bool result = employeeRepository.AddEmployee(employeeModel);
+            bool result= employeeRepository.AddEmployee(employeeModel);
             //printing message on the basis of bool result using ternary condition
             Console.WriteLine(result == true ? "data writtern in database" : "data is not written in database");
 
