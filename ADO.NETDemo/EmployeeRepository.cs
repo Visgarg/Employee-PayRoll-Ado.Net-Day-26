@@ -180,7 +180,7 @@ namespace ADO.NETDemo
         /// <exception cref="Exception">no data found</exception>
         public decimal ReadingUpdatedSalaryFromDataBase()
         {
-            //defining connection string and connection seperately for reading of connection string by test case.
+            //defining connection string and connection seperately for reading of connection string and connection by unit test
             string connectionString1 = @"Data Source=DESKTOP-ERFDFCL\SQLEXPRESS01;Initial Catalog=employee_payroll;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             SqlConnection connection1 = new SqlConnection(connectionString1);
            // using (this.connection1)
@@ -192,7 +192,7 @@ namespace ADO.NETDemo
                 //sql command consisting of employee payroll
                 SqlCommand sqlCommand = new SqlCommand("Select * from employee_payroll", connection1);
                 //opening up connection
-                /connection1.Open();
+                connection1.Open();
                 //reading up the data from database using connected architecture
                 SqlDataReader dr = sqlCommand.ExecuteReader();
                 //if datareader has any rows then while loop is executed until data is read line by line
@@ -219,6 +219,57 @@ namespace ADO.NETDemo
                 return salary;
            // }
             
+        }
+        public List<EmployeeModel> GetAllemployeeInDateRange()
+        {
+            using (connection)
+            {
+                //sql query
+                string query = "select * from employee_payroll where start between cast('2019-03-03' as date) and getdate();";
+                //sql command
+                SqlCommand sqlCommand = new SqlCommand(query, connection);
+                //opening up connection
+                connection.Open();
+                //reading data from database
+                //connected architecture
+                SqlDataReader dr = sqlCommand.ExecuteReader();
+                //if database has rows then if condition is satisfied
+                if (dr.HasRows)
+                {
+                    //runs upto reading of data
+                    while (dr.Read())
+                    {
+                        //all the data needs to be iterated, mapping is done hence no is specified into getint or getstring.
+                        EmployeeModel employeeModel = new EmployeeModel();
+                        employeeModel.EmployeeID = dr.GetInt32(0);
+                        employeeModel.EmployeeName = dr.GetString(1);
+                        employeeModel.BasicPay = dr.GetDecimal(2);
+                        employeeModel.StartDate = dr.GetDateTime(3);
+                        employeeModel.Gender = dr.GetString(4);
+                        employeeModel.Deductions = dr.GetDecimal(5);
+                        employeeModel.TaxablePay = dr.GetDecimal(6);
+                        employeeModel.Tax = dr.GetDecimal(7);
+                        employeeModel.NetPay = dr.GetDecimal(8);
+
+                        //adding details into list
+                        employeeDetailsList.Add(employeeModel);
+
+
+                    }
+                    //reader connection closed
+                    dr.Close();
+                    //database connection closed
+                    connection.Close();
+                    //returning list
+                    return employeeDetailsList;
+                }
+                else
+                {
+                    //throw exception if data not found
+                    throw new Exception("No data found");
+                }
+
+            }
         }
     }
    
