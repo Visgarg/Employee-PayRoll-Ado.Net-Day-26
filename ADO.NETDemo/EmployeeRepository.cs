@@ -283,8 +283,8 @@ namespace ADO.NETDemo
         {
             using (connection)
             {
-                //sql query
-                string query = "select gender, sum(salary) total_sum, max(salary) max_salary, min(salary) min_salary, AVG(salary) avg_salary, count(salary) CountOfGenders from employee_payroll group by gender";
+                //sql query with multiple tables and retrieving grouped data using different tables
+                string query = "select employee.gender, sum(payroll.basepay) total_sum, max(payroll.basepay) max_salary, min(payroll.basepay) min_salary, AVG(payroll.basepay) avg_salary, count(payroll.basepay) CountOfGenders from employee join payroll on payroll.salary_id= employee.salaryid group by gender";
                 //sql command
                 SqlCommand sqlCommand = new SqlCommand(query, connection);
                 //opening up connection
