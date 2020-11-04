@@ -180,16 +180,19 @@ namespace ADO.NETDemo
         /// <exception cref="Exception">no data found</exception>
         public decimal ReadingUpdatedSalaryFromDataBase()
         {
-            using (this.connection)
-            {
+            //defining connection string and connection seperately for reading of connection string by test case.
+            string connectionString1 = @"Data Source=DESKTOP-ERFDFCL\SQLEXPRESS01;Initial Catalog=employee_payroll;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            SqlConnection connection1 = new SqlConnection(connectionString1);
+           // using (this.connection1)
+            //{
                 //variable defined for passing salary to program.cs class
                 decimal salary;
                 //employee model class is instantiated to read the data
                 EmployeeModel model = new EmployeeModel();
                 //sql command consisting of employee payroll
-                SqlCommand sqlCommand = new SqlCommand("Select * from employee_payroll", connection);
+                SqlCommand sqlCommand = new SqlCommand("Select * from employee_payroll", connection1);
                 //opening up connection
-                this.connection.Open();
+                /connection1.Open();
                 //reading up the data from database using connected architecture
                 SqlDataReader dr = sqlCommand.ExecuteReader();
                 //if datareader has any rows then while loop is executed until data is read line by line
@@ -211,10 +214,10 @@ namespace ADO.NETDemo
                 }
                 //closing up reading and connection.
                 dr.Close();
-                connection.Close();
+                connection1.Close();
                 //return updated salary
                 return salary;
-            }
+           // }
             
         }
     }
