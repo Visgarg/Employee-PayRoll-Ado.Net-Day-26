@@ -125,5 +125,35 @@ namespace ADO.NETDemo
                 Console.WriteLine(ex);
             }
         }
+        public static void AddingDataInMultipleTable()
+        {
+            //initializing employeemodel
+            EmployeeModel employeeModel = new EmployeeModel();
+            //adding values to variables
+            employeeModel.EmployeeID = 32;
+            employeeModel.EmployeeName = "Akshay Poriya";
+            employeeModel.Gender = "M";
+            employeeModel.PhoneNumber = 9585858585;
+            employeeModel.StartDate = Convert.ToDateTime("2020-09-18");
+            employeeModel.BasicPay = 500000;
+            employeeModel.Deductions = 50000;
+            employeeModel.TaxablePay = 450000;
+            employeeModel.Tax = 50000;
+            employeeModel.NetPay = 400000;
+            employeeModel.Address = "Bangalore";
+            employeeModel.companyId = 107;
+            employeeModel.salaryid = 16;
+            employeeModel.companyName = "Capgemini India";
+            employeeModel.departmentid = 11;
+            employeeModel.Department = "Developer";
+            employeeModel.headOfDepartment = "Mr. Kalyan";
+            employeeModel.noOfEmployees = 44;
+            //instatiating employee repository
+            EmployeeRepository employeeRepository = new EmployeeRepository();
+            //passing employee model into method of employee repository class
+            bool result = employeeRepository.InsertingDataIntoMultipleTables(employeeModel);
+            //printing message on the basis of bool result using ternary condition
+            Console.WriteLine(result == true ? "data writtern in database" : "data is not written in database");
+        }
     }
 }

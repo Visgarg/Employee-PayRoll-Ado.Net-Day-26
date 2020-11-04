@@ -31,5 +31,8 @@ namespace ADO.NETDemo
 
         public decimal totalSalary { get; set; }
         public decimal maxSalary { get; set; }
+        public int departmentid { get; set; }
+        public int noOfEmployees { get; set; }
+        public string headOfDepartment { get; set; }
     }
 }

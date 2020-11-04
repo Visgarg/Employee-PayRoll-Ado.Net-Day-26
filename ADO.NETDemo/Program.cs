@@ -29,7 +29,8 @@ namespace ADO.NETDemo
             //UpdatingSalary();
             //ReadingUpdatedData();
             //RetrievingSpecificDateRangeData();
-            EmployeeRepositoryCaller.RetrievingGroupedDataByGender();
+            //EmployeeRepositoryCaller.RetrievingGroupedDataByGender();
+            EmployeeRepositoryCaller.AddingDataInMultipleTable();
 
         }
        
