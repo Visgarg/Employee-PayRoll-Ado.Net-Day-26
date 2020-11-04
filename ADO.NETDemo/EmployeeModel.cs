@@ -33,5 +33,11 @@ namespace ADO.NETDemo
         public int companyId { get; set; }
         public decimal NetPay { get; set; }
         public int salaryid { get; set; }
+
+        public decimal totalSalary { get; set; }
+        public decimal maxSalary { get; set; }
+        public int departmentid { get; set; }
+        public int noOfEmployees { get; set; }
+        public string headOfDepartment { get; set; }
     }
 }

@@ -10,6 +10,7 @@ namespace ADO.NETDemo
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Common;
     using System.Data.SqlClient;
     using System.Linq.Expressions;
     using System.Text;
@@ -271,6 +272,117 @@ namespace ADO.NETDemo
 
             }
         }
+        /// <summary>
+        /// Gets the grouped data from the database
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">No data found</exception>
+        public List<EmployeeModel> GetGroupedData()
+        {
+            using (connection)
+            {
+                //sql query
+                string query = "select gender, sum(salary) total_sum, max(salary) max_salary, min(salary) min_salary, AVG(salary) avg_salary, count(salary) CountOfGenders from employee_payroll group by gender";
+                //sql command
+                SqlCommand sqlCommand = new SqlCommand(query, connection);
+                //opening up connection
+                connection.Open();
+                //reading data from database
+                //connected architecture
+                SqlDataReader dr = sqlCommand.ExecuteReader();
+                //if database has rows then if condition is satisfied
+                if (dr.HasRows)
+                {
+                    //runs upto reading of data
+                    while (dr.Read())
+                    {
+                        //all the data needs to be iterated, mapping is done hence no is specified into getint or getstring.
+                        EmployeeModel employeeModel = new EmployeeModel();
+                        employeeModel.Gender = dr["Gender"].ToString();
+                        employeeModel.totalSalary = dr.GetDecimal(1);
+                        //passing aliased name
+                        employeeModel.maxSalary = Convert.ToDecimal(dr["max_salary"]);
+
+                        //adding details into list
+                        employeeDetailsList.Add(employeeModel);
+
+
+                    }
+                    //reader connection closed
+                    dr.Close();
+                    //database connection closed
+                    connection.Close();
+                    //returning list
+                    return employeeDetailsList;
+                }
+                else
+                {
+                    //throw exception if data not found
+                    throw new Exception("No data found");
+                }
+
+            }
+        }
+        /// <summary>
+        /// Insertings the data into multiple tables.
+        /// </summary>
+        /// <param name="employeeModel">The employee model.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public bool InsertingDataIntoMultipleTables(EmployeeModel employeeModel)
+        {
+            try
+            {
+                //using established connection
+                using (this.connection)
+                {
+                    //sql command which executes stored procedure created in sql server
+                    //inserting data stored procedure implements transaction
+                    //if data is added wrong in any table, whole data will be rolled back.
+                    SqlCommand command = new SqlCommand("insertingdata", connection);
+                    //commandtype is choosen as stored procedure
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+                    //adding data into variables defined in stored procedure
+                    command.Parameters.AddWithValue("@Employeeid", employeeModel.EmployeeID);
+                    command.Parameters.AddWithValue("@phone_number", employeeModel.PhoneNumber);
+                    command.Parameters.AddWithValue("@address", employeeModel.Address);
+                    command.Parameters.AddWithValue("@Gender", employeeModel.Gender);
+                    command.Parameters.AddWithValue("@company_id", employeeModel.companyId);
+                    command.Parameters.AddWithValue("@start", employeeModel.StartDate);
+                    command.Parameters.AddWithValue("@salaryid", employeeModel.salaryid);
+                    command.Parameters.AddWithValue("@basepay", employeeModel.BasicPay);
+                    command.Parameters.AddWithValue("@deductions", employeeModel.Deductions);
+                    command.Parameters.AddWithValue("@taxable_pay", employeeModel.TaxablePay);
+                    command.Parameters.AddWithValue("@tax", employeeModel.Tax);
+                    command.Parameters.AddWithValue("@netpay", employeeModel.NetPay);
+                    command.Parameters.AddWithValue("@name", employeeModel.EmployeeName);
+                    command.Parameters.AddWithValue("@departmentid", employeeModel.departmentid);
+                    command.Parameters.AddWithValue("@departmentname", employeeModel.Department);
+                    command.Parameters.AddWithValue("@noOfEmployees", employeeModel.noOfEmployees);
+                    command.Parameters.AddWithValue("@headofdepartment", employeeModel.headOfDepartment);
+                    command.Parameters.AddWithValue("@companyname", employeeModel.companyName);
+                    //opening connection
+                    connection.Open();
+                    //adding data into database - using disconnected architecture(as connected architecture only reads the data)
+                    var result = command.ExecuteNonQuery();
+                    //closing connection
+                    connection.Close();
+                    if (result != 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                this.connection.Close();
+            }
+
+        }
     }
-   
 }
