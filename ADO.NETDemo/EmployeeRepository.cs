@@ -16,7 +16,7 @@ namespace ADO.NETDemo
     /// <summary>
     /// employee repository class to connect to database
     /// </summary>
-    class EmployeeRepository
+    public class EmployeeRepository
     {
         //static as connection will be made only once in application
         //list for saving details from database
@@ -35,7 +35,7 @@ namespace ADO.NETDemo
             using (connection)
             {
                 //sql query
-                string query = "select * from employee e join payroll p on e.id = p.employeeID join EmployeeDepartment ed on ed.employeeID = e.id join company c on c.company_id = e.company_id join departments d on d.departmentID = ed.departmentID ";
+                string query = "select * from employee e join payroll p on e.salaryid = p.salary_Id join EmployeeDepartment ed on ed.employeeID = e.id join company c on c.company_id = e.company_id join departments d on d.departmentID = ed.departmentID ";
                 //sql command
                 SqlCommand sqlCommand = new SqlCommand(query, connection);
                 //opening up connection
@@ -63,8 +63,8 @@ namespace ADO.NETDemo
                         employeeModel.TaxablePay = dr.GetDecimal(10);
                         employeeModel.Tax = dr.GetDecimal(11);
                         employeeModel.NetPay = dr.GetDecimal(12);
-                        employeeModel.companyName = dr.GetString(16);
-                        employeeModel.Department = dr.GetString(18);
+                        employeeModel.companyName = dr.GetString(17);
+                        employeeModel.Department = dr.GetString(19);
 
                         //adding details into list
                         employeeDetailsList.Add(employeeModel);
@@ -93,7 +93,7 @@ namespace ADO.NETDemo
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public bool AddEmployee(EmployeeModel employeeModel)
-        {
+        { 
             try
             {
                 //using established connection
@@ -110,6 +110,7 @@ namespace ADO.NETDemo
                     command.Parameters.AddWithValue("@Gender", employeeModel.Gender);
                     command.Parameters.AddWithValue("@companyid", employeeModel.companyId);
                     command.Parameters.AddWithValue("@start", employeeModel.StartDate);
+                    command.Parameters.AddWithValue("@salaryid",employeeModel.salaryid);
                     //opening connection
                     connection.Open();
                     //adding data into database - using disconnected architecture(as connected architecture only reads the data)
@@ -132,5 +133,90 @@ namespace ADO.NETDemo
                 this.connection.Close();
             }
         }
+        /// <summary>
+        /// Updatings the salary in data base for a employee
+        /// </summary>
+        /// <param name="employeeModel">The employee model.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public bool UpdatingSalaryInDataBase(EmployeeModel employeeModel)
+        {
+            try
+            {
+               //using the connection defined at start of class 
+                using (this.connection)
+                {
+                    //SqlCommand contains sql stored procedure for updating salary and a connection
+                    SqlCommand sqlCommand = new SqlCommand("spUpdatingSalary", connection);
+                    //command type is for stored procedure
+                    sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                    //parameters are assigned values from employeeModel
+                    sqlCommand.Parameters.AddWithValue("@id", employeeModel.EmployeeID);
+                    sqlCommand.Parameters.AddWithValue("@salary", employeeModel.BasicPay);
+                    sqlCommand.Parameters.AddWithValue("@name", employeeModel.EmployeeName);
+                    //opening up connection
+                    connection.Open();
+                    //result contain no of affected rows as Execute Non Query gives no of affected rows after query
+                    int result= sqlCommand.ExecuteNonQuery();
+                    if(result!=0)
+                    {
+                        return true;
+                    }
+                    return false;
+              
+                }
+
+            }
+            //catching up the exception 
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        /// <summary>
+        /// Readings the updated salary from data base after updating data.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">no data found</exception>
+        public decimal ReadingUpdatedSalaryFromDataBase()
+        {
+            using (this.connection)
+            {
+                //variable defined for passing salary to program.cs class
+                decimal salary;
+                //employee model class is instantiated to read the data
+                EmployeeModel model = new EmployeeModel();
+                //sql command consisting of employee payroll
+                SqlCommand sqlCommand = new SqlCommand("Select * from employee_payroll", connection);
+                //opening up connection
+                this.connection.Open();
+                //reading up the data from database using connected architecture
+                SqlDataReader dr = sqlCommand.ExecuteReader();
+                //if datareader has any rows then while loop is executed until data is read line by line
+                if (dr.HasRows)
+                {
+                    while (dr.Read())
+                    {
+                        model.EmployeeID = Convert.ToInt32(dr["id"]);
+                        model.EmployeeName = dr["name"].ToString();
+                        model.BasicPay = Convert.ToDecimal(dr["salary"]);
+                    }
+                    Console.WriteLine($"employeeId :{model.EmployeeID}, employeename: {model.EmployeeName}, salary :{model.BasicPay}");
+                    salary = model.BasicPay;
+
+                }
+                else
+                {
+                    throw new Exception("no data found");
+                }
+                //closing up reading and connection.
+                dr.Close();
+                connection.Close();
+                //return updated salary
+                return salary;
+            }
+            
+        }
     }
+   
 }

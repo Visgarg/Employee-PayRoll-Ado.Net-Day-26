@@ -9,7 +9,7 @@ namespace ADO.NETDemo
     using System;
     using System.Collections.Generic;
     using System.Text;
-    class EmployeeModel
+    public class EmployeeModel
     {
         public int EmployeeID { get; set; }
         public string EmployeeName { get; set; }
@@ -27,5 +27,6 @@ namespace ADO.NETDemo
         public string companyName { get; set; }
         public int companyId { get; set; }
         public decimal NetPay { get; set; }
+        public int salaryid { get; set; }
     }
 }

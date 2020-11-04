@@ -25,7 +25,10 @@ namespace ADO.NETDemo
             //Console.WriteLine("Hello World!");
             Console.WriteLine("Welcome to Employee Payroll");
             //GettingAllData();
-            AddingDataInDataBase();
+            //AddingDataInDataBase();
+            UpdatingSalary();
+            ReadingUpdatedData();
+            
 
         }
         public static void GettingAllData()
@@ -63,7 +66,8 @@ namespace ADO.NETDemo
             //employeeModel.Tax = 50000;
             //employeeModel.NetPay = 400000;
             employeeModel.Address = "Bangalore";
-            employeeModel.companyId = 001;
+            employeeModel.companyId = 101;
+            employeeModel.salaryid = 03;
             //employeeModel.companyName = "Capgemini India";
             //instatiating employee repository
             EmployeeRepository employeeRepository = new EmployeeRepository();
@@ -72,6 +76,22 @@ namespace ADO.NETDemo
             //printing message on the basis of bool result using ternary condition
             Console.WriteLine(result == true ? "data writtern in database" : "data is not written in database");
 
+        }
+        public static void UpdatingSalary()
+        {
+            EmployeeModel employeeModel = new EmployeeModel();
+            employeeModel.EmployeeID = 1;
+            employeeModel.EmployeeName = "Vishal";
+            employeeModel.BasicPay = 300000;
+            EmployeeRepository employeeRepository = new EmployeeRepository();
+            bool result = employeeRepository.UpdatingSalaryInDataBase(employeeModel);
+            Console.WriteLine(result ==true? "data writtern in database" : "data is not written in database");
+        }
+        public static void ReadingUpdatedData()
+        {
+            EmployeeRepository repository = new EmployeeRepository();
+            decimal result= repository.ReadingUpdatedSalaryFromDataBase();
+            Console.WriteLine("Updated Salary"+result);
         }
     }
 }
