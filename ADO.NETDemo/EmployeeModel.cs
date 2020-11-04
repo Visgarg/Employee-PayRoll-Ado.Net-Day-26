@@ -9,7 +9,12 @@ namespace ADO.NETDemo
     using System;
     using System.Collections.Generic;
     using System.Text;
+  
     public class EmployeeModel
+    /// <summary>
+    /// Adding properties for the variables to be retrieved from database
+    /// </summary>
+
     {
         public int EmployeeID { get; set; }
         public string EmployeeName { get; set; }
