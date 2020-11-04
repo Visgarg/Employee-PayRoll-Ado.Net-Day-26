@@ -148,7 +148,8 @@ namespace ADO.NETDemo
                 using (this.connection)
                 {
                     //SqlCommand contains sql stored procedure for updating salary and a connection
-                    SqlCommand sqlCommand = new SqlCommand("spUpdatingSalary", connection);
+                    //SqlCommand sqlCommand = new SqlCommand("spUpdatingSalary", connection);
+                    SqlCommand sqlCommand = new SqlCommand("spUpdatingSalaryFromMultipleTable", connection);
                     //command type is for stored procedure
                     sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
                     //parameters are assigned values from employeeModel
@@ -179,7 +180,7 @@ namespace ADO.NETDemo
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception">no data found</exception>
-        public decimal ReadingUpdatedSalaryFromDataBase()
+        public decimal ReadingUpdatedSalaryFromDataBase(EmployeeModel employeeModel)
         {
             //defining connection string and connection seperately for reading of connection string and connection by unit test
             string connectionString1 = @"Data Source=DESKTOP-ERFDFCL\SQLEXPRESS01;Initial Catalog=employee_payroll;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
@@ -191,7 +192,8 @@ namespace ADO.NETDemo
                 //employee model class is instantiated to read the data
                 EmployeeModel model = new EmployeeModel();
                 //sql command consisting of employee payroll
-                SqlCommand sqlCommand = new SqlCommand("Select * from employee_payroll", connection1);
+                SqlCommand sqlCommand = new SqlCommand("Select * from employee join payroll on payroll.salary_id=employee.salaryid where id=@id", connection1);
+                sqlCommand.Parameters.AddWithValue("@id", employeeModel.EmployeeID);
                 //opening up connection
                 connection1.Open();
                 //reading up the data from database using connected architecture
@@ -203,7 +205,7 @@ namespace ADO.NETDemo
                     {
                         model.EmployeeID = Convert.ToInt32(dr["id"]);
                         model.EmployeeName = dr["name"].ToString();
-                        model.BasicPay = Convert.ToDecimal(dr["salary"]);
+                        model.BasicPay = Convert.ToDecimal(dr["basepay"]);
                     }
                     Console.WriteLine($"employeeId :{model.EmployeeID}, employeename: {model.EmployeeName}, salary :{model.BasicPay}");
                     salary = model.BasicPay;

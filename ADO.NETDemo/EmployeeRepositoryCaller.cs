@@ -52,21 +52,31 @@ namespace ADO.NETDemo
             Console.WriteLine(result == true ? "data writtern in database" : "data is not written in database");
 
         }
+        /// <summary>
+        /// Updatings the salary.
+        /// </summary>
         public static void UpdatingSalary()
         {
             EmployeeModel employeeModel = new EmployeeModel();
-            employeeModel.EmployeeID = 1;
-            employeeModel.EmployeeName = "Vishal";
-            employeeModel.BasicPay = 300000;
+            //adding salary and employee id and name whose salary is to be updated
+            employeeModel.EmployeeID = 32;
+            employeeModel.EmployeeName = "Akshay Poriya";
+            employeeModel.BasicPay = 700000;
             EmployeeRepository employeeRepository = new EmployeeRepository();
             bool result = employeeRepository.UpdatingSalaryInDataBase(employeeModel);
             Console.WriteLine(result == true ? "data writtern in database" : "data is not written in database");
         }
+        /// <summary>
+        /// Readings the updated data.
+        /// </summary>
         public static void ReadingUpdatedData()
         {
             EmployeeRepository repository = new EmployeeRepository();
-            decimal result = repository.ReadingUpdatedSalaryFromDataBase();
-            Console.WriteLine("Updated Salary" + result);
+            EmployeeModel employeeModel = new EmployeeModel();
+            //defining employee id whose salary is updated
+            employeeModel.EmployeeID = 32;
+            decimal result= repository.ReadingUpdatedSalaryFromDataBase(employeeModel);
+            Console.WriteLine("Salary\t"+ result);
         }
         /// <summary>
         /// Retrievings the specific date range data.
