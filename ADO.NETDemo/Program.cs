@@ -28,7 +28,8 @@ namespace ADO.NETDemo
             //AddingDataInDataBase();
             //UpdatingSalary();
             //ReadingUpdatedData();
-            RetrievingSpecificDateRangeData();
+            //RetrievingSpecificDateRangeData();
+            RetrievingGroupedDataByGender();
 
 
         }
@@ -116,6 +117,31 @@ namespace ADO.NETDemo
                     Console.WriteLine($"Employee Taxable Pay :{employees.TaxablePay}");
                     Console.WriteLine($"Tax:{employees.Tax}");
                     Console.WriteLine($"Net pay:{employees.NetPay}");
+
+                }
+            }
+            //catching exceptions
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
+            }
+        }
+        /// <summary>
+        /// Retrievings the grouped data by gender.
+        /// </summary>
+        public static void RetrievingGroupedDataByGender()
+        {
+            //instatiating employee repository class
+            EmployeeRepository employeeRepository = new EmployeeRepository();
+            List<EmployeeModel> list = new List<EmployeeModel>();
+            try
+            {
+                //getting list of details of grouped data by gender
+                list = employeeRepository.GetGroupedData();
+                foreach (EmployeeModel employees in list)
+                {
+                    Console.WriteLine($"Gender: {employees.Gender} totalSum: {employees.totalSalary} MaxSalary: {employees.maxSalary} ");
 
                 }
             }

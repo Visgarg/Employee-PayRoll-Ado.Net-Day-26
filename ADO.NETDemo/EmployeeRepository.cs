@@ -10,6 +10,7 @@ namespace ADO.NETDemo
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Common;
     using System.Data.SqlClient;
     using System.Linq.Expressions;
     using System.Text;
@@ -271,6 +272,56 @@ namespace ADO.NETDemo
 
             }
         }
+        /// <summary>
+        /// Gets the grouped data from the database
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception">No data found</exception>
+        public List<EmployeeModel> GetGroupedData()
+        {
+            using (connection)
+            {
+                //sql query
+                string query = "select gender, sum(salary) total_sum, max(salary) max_salary, min(salary) min_salary, AVG(salary) avg_salary, count(salary) CountOfGenders from employee_payroll group by gender";
+                //sql command
+                SqlCommand sqlCommand = new SqlCommand(query, connection);
+                //opening up connection
+                connection.Open();
+                //reading data from database
+                //connected architecture
+                SqlDataReader dr = sqlCommand.ExecuteReader();
+                //if database has rows then if condition is satisfied
+                if (dr.HasRows)
+                {
+                    //runs upto reading of data
+                    while (dr.Read())
+                    {
+                        //all the data needs to be iterated, mapping is done hence no is specified into getint or getstring.
+                        EmployeeModel employeeModel = new EmployeeModel();
+                        employeeModel.Gender = dr["Gender"].ToString();
+                        employeeModel.totalSalary = dr.GetDecimal(1);
+                        //passing aliased name
+                        employeeModel.maxSalary = Convert.ToDecimal(dr["max_salary"]);
+
+                        //adding details into list
+                        employeeDetailsList.Add(employeeModel);
+
+
+                    }
+                    //reader connection closed
+                    dr.Close();
+                    //database connection closed
+                    connection.Close();
+                    //returning list
+                    return employeeDetailsList;
+                }
+                else
+                {
+                    //throw exception if data not found
+                    throw new Exception("No data found");
+                }
+
+            }
+        }
     }
-   
 }

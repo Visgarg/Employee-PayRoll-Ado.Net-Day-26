@@ -28,5 +28,8 @@ namespace ADO.NETDemo
         public int companyId { get; set; }
         public decimal NetPay { get; set; }
         public int salaryid { get; set; }
+
+        public decimal totalSalary { get; set; }
+        public decimal maxSalary { get; set; }
     }
 }
